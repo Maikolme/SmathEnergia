@@ -1,64 +1,92 @@
-function useSidenav() {
-    onMounted(() => {
-        M.Sidenav.init(document.querySelectorAll('.sidenav'));
+document.addEventListener('DOMContentLoaded', function() {
+    M.AutoInit();
+
+    document.querySelectorAll('.sidenav').forEach(el => {
+        M.Sidenav.init(el, { edge: 'left', draggable: true });
     });
+
+    document.querySelectorAll('select').forEach(el => {
+        M.FormSelect.init(el);
+    });
+
+    document.querySelectorAll('.tooltip').forEach(el => {
+        M.Tooltip.init(el);
+    });
+
+    initLocalStorage();
+});
+
+function initLocalStorage() {
+    if (!localStorage.getItem('energiaSmart_data')) {
+        const defaultData = {
+            settings: {
+                monthlyGoal: 200,
+                tariffRate: 0.15,
+                currency: 'USD',
+                notifications: true
+            },
+            readings: [],
+            lastSync: null
+        };
+        localStorage.setItem('energiaSmart_data', JSON.stringify(defaultData));
+    }
 }
 
-function useSelects() {
-    onMounted(() => {
-        nextTick(() => {
-            M.FormSelect.init(document.querySelectorAll('select'));
+function getLocalData() {
+    try {
+        return JSON.parse(localStorage.getItem('energiaSmart_data')) || {};
+    } catch {
+        return {};
+    }
+}
+
+function saveLocalData(data) {
+    localStorage.setItem('energiaSmart_data', JSON.stringify(data));
+}
+
+function addLocalReading(reading) {
+    const data = getLocalData();
+    if (!data.readings) data.readings = [];
+    data.readings.push({
+        id: Date.now(),
+        meter_reading: reading.meter_reading,
+        reading_date: reading.reading_date,
+        notes: reading.notes || '',
+        timestamp: new Date().toISOString()
+    });
+    saveLocalData(data);
+}
+
+function getLocalReadings() {
+    const data = getLocalData();
+    return data.readings || [];
+}
+
+function clearLocalReadings() {
+    const data = getLocalData();
+    data.readings = [];
+    saveLocalData(data);
+}
+
+function showToast(message, type = 'success') {
+    if (typeof Swal !== 'undefined') {
+        swalToast(type === 'success' ? 'success' : 'error', message);
+    } else {
+        M.toast({
+            html: `<i class="material-icons left">${type === 'success' ? 'check_circle' : 'error'}</i>${message}`,
+            classes: type === 'success' ? 'green' : 'red',
+            displayLength: 3000
         });
-    });
-}
-
-function useLocalStorage(key, defaultValue) {
-    const data = ref(defaultValue);
-
-    const load = () => {
-        try {
-            const stored = localStorage.getItem(key);
-            if (stored) data.value = JSON.parse(stored);
-        } catch {}
-    };
-
-    const save = (value) => {
-        data.value = value;
-        localStorage.setItem(key, JSON.stringify(value));
-    };
-
-    load();
-    return { data, save, load };
-}
-
-function useFlashMessages() {
-    onMounted(() => {
-        document.querySelectorAll('.swal-flash').forEach(el => {
-            const type = el.dataset.type;
-            const title = el.dataset.title;
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    icon: type,
-                    title: title,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#00897b',
-                    customClass: { popup: 'swal2-popup-custom' },
-                    timer: type === 'success' ? 2500 : undefined,
-                    timerProgressBar: type === 'success'
-                });
-            }
-        });
-    });
+    }
 }
 
 function formatDate(dateStr) {
-    if (!dateStr) return '';
     const d = new Date(dateStr);
     return d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
 function calculateConsumption(readings) {
-    if (!readings || readings.length < 2) return [];
+    if (readings.length < 2) return [];
     const sorted = [...readings].sort((a, b) => new Date(a.reading_date) - new Date(b.reading_date));
     const result = [];
     for (let i = 1; i < sorted.length; i++) {

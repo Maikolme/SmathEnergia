@@ -2,84 +2,105 @@
 {% block title %}Recomendaciones - EnergiaSmart{% endblock %}
 
 {% block body %}
-<div id="recs-app">
-    <ul id="slide-out" class="sidenav sidenav-fixed">
-        <li>
-            <div class="user-view sidebar-header">
-                <div class="background teal darken-2"></div>
-                <div class="sidebar-logo"><img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="width: 180px; height: auto; padding: 10px 0;"></div>
-                <a href="{{ url_for('profile_page') }}"><i class="material-icons circle white-text teal darken-1">person</i></a>
-                <a href="{{ url_for('profile_page') }}"><span class="white-text name">{{ current_user.name }}</span></a>
-                <a href="{{ url_for('profile_page') }}"><span class="white-text email">{{ current_user.email }}</span></a>
+<ul id="slide-out" class="sidenav sidenav-fixed">
+    <li>
+        <div class="user-view sidebar-header">
+            <div class="background teal darken-2"></div>
+            <div class="sidebar-logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="width: 180px; height: auto; padding: 10px 0;">
             </div>
-        </li>
-        <li><a href="{{ url_for('dashboard') }}" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
-        <li><a href="{{ url_for('readings_page') }}" class="waves-effect"><i class="material-icons">speed</i>Lecturas</a></li>
-        <li><a href="{{ url_for('statistics_page') }}" class="waves-effect"><i class="material-icons">bar_chart</i>Estadísticas</a></li>
-        <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect active"><i class="material-icons">lightbulb</i>Recomendaciones</a></li>
-        <li><a href="{{ url_for('history_page') }}" class="waves-effect"><i class="material-icons">history</i>Historial</a></li>
-        <li><div class="divider"></div></li>
-        <li><a href="{{ url_for('profile_page') }}" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
-        <li><a href="{{ url_for('settings_page') }}" class="waves-effect"><i class="material-icons">settings</i>Configuración</a></li>
-        <li><div class="divider"></div></li>
-        <li><a href="{{ url_for('logout') }}" class="waves-effect red-text"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
-    </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <a href="{{ url_for('profile_page') }}"><i class="material-icons circle white-text teal darken-1">person</i></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text name">{{ current_user.name }}</span></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text email">{{ current_user.email }}</span></a>
+        </div>
+    </li>
+    <li><a href="{{ url_for('dashboard') }}" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="{{ url_for('readings_page') }}" class="waves-effect"><i class="material-icons">speed</i>Lecturas</a></li>
+    <li><a href="{{ url_for('statistics_page') }}" class="waves-effect"><i class="material-icons">bar_chart</i>Estadísticas</a></li>
+    <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect active"><i class="material-icons">lightbulb</i>Recomendaciones</a></li>
+    <li><a href="{{ url_for('history_page') }}" class="waves-effect"><i class="material-icons">history</i>Historial</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('profile_page') }}" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
+    <li><a href="{{ url_for('settings_page') }}" class="waves-effect"><i class="material-icons">settings</i>Configuración</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('logout') }}" class="waves-effect red-text"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+</ul>
 
-    <main class="main-content">
-        <nav class="nav-extended teal darken-1">
-            <div class="nav-wrapper">
-                <a href="{{ url_for('dashboard') }}" class="brand-logo center"><img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="height: 36px; margin-top: 2px;"></a>
-                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            </div>
-        </nav>
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
-        <div class="container-fluid">
-            <h4 class="page-title"><i class="material-icons left">lightbulb</i>Recomendaciones</h4>
-            <p class="grey-text">Sugerencias personalizadas basadas en tu consumo energético.</p>
+<main class="main-content">
+    <nav class="nav-extended teal darken-1">
+        <div class="nav-wrapper">
+            <a href="{{ url_for('dashboard') }}" class="brand-logo center">EnergiaSmart</a>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
 
-            <div class="row">
-                <div v-for="rec in recommendations" :key="rec.title" class="col s12 m6 l4">
-                    <div class="card z-depth-2 recommendation-card" :class="rec.priority + '-priority'">
-                        <div class="card-content">
-                            <div class="rec-header">
-                                <i class="material-icons medium" :class="rec.priority === 'high' ? 'red-text' : rec.priority === 'medium' ? 'orange-text' : 'teal-text'">
-                                    \{{ rec.priority === 'high' ? 'warning' : rec.priority === 'medium' ? 'info' : 'check_circle' }}
-                                </i>
-                                <span class="badge" :class="rec.priority === 'high' ? 'red white-text' : rec.priority === 'medium' ? 'orange white-text' : 'teal white-text'">\{{ rec.priority }}</span>
-                            </div>
-                            <h6 class="rec-title">\{{ rec.title }}</h6>
-                            <p class="rec-desc grey-text text-darken-1">\{{ rec.description }}</p>
-                            <div class="rec-category">
-                                <span class="chip" :class="getCategoryColor(rec.category) + ' lighten-2 white-text'">\{{ rec.category }}</span>
-                            </div>
+    <div class="container-fluid">
+        <h4 class="page-title"><i class="material-icons left">lightbulb</i>Recomendaciones</h4>
+        <p class="grey-text">Sugerencias personalizadas basadas en tu consumo energético.</p>
+
+        <div class="row">
+            {% for rec in recommendations %}
+            <div class="col s12 m6 l4">
+                <div class="card z-depth-2 recommendation-card {{ 'high-priority' if rec.priority == 'high' else 'medium-priority' if rec.priority == 'medium' else 'low-priority' }}">
+                    <div class="card-content">
+                        <div class="rec-header">
+                            <i class="material-icons medium {{ 'red-text' if rec.priority == 'high' else 'orange-text' if rec.priority == 'medium' else 'teal-text' }}">
+                                {{ 'warning' if rec.priority == 'high' else 'info' if rec.priority == 'medium' else 'check_circle' }}
+                            </i>
+                            <span class="badge {{ 'red white-text' if rec.priority == 'high' else 'orange white-text' if rec.priority == 'medium' else 'teal white-text' }}">{{ rec.priority }}</span>
                         </div>
-                    </div>
-                </div>
-
-                <div v-if="recommendations.length === 0" class="col s12">
-                    <div class="card z-depth-2">
-                        <div class="card-content center-align">
-                            <i class="material-icons large green-text">check_circle</i>
-                            <h5>¡Excelente!</h5>
-                            <p class="grey-text">No hay recomendaciones urgentes. Continúa con tus buenos hábitos energéticos.</p>
+                        <h6 class="rec-title">{{ rec.title }}</h6>
+                        <p class="rec-desc grey-text text-darken-1">{{ rec.description }}</p>
+                        <div class="rec-category">
+                            <span class="chip {{ 'teal' if rec.category == 'meta' else 'orange' if rec.category == 'consumo' else 'green' if rec.category == 'costo' else 'blue' if rec.category == 'ambiente' else 'grey' }} lighten-2 white-text">
+                                {{ rec.category }}
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
 
-            <div class="row">
-                <div class="col s12">
-                    <div class="card z-depth-2 tips-card">
-                        <div class="card-content">
-                            <span class="card-title"><i class="material-icons left">school</i>Guías de Eficiencia Energética</span>
-                            <div class="row">
-                                <div v-for="guide in guides" :key="guide.title" class="col s12 m4">
-                                    <div class="guide-item">
-                                        <i class="material-icons large" :class="guide.color + '-text'">\{{ guide.icon }}</i>
-                                        <h6>\{{ guide.title }}</h6>
-                                        <p class="grey-text">\{{ guide.text }}</p>
-                                    </div>
+            {% if not recommendations %}
+            <div class="col s12">
+                <div class="card z-depth-2">
+                    <div class="card-content center-align">
+                        <i class="material-icons large green-text">check_circle</i>
+                        <h5>¡Excelente!</h5>
+                        <p class="grey-text">No hay recomendaciones urgentes. Continúa con tus buenos hábitos energéticos.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <div class="card z-depth-2 tips-card">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">school</i>Guías de Eficiencia Energética</span>
+                        <div class="row">
+                            <div class="col s12 m4">
+                                <div class="guide-item">
+                                    <i class="material-icons large teal-text">home</i>
+                                    <h6>Hogar Eficiente</h6>
+                                    <p class="grey-text">Aprende a optimizar el consumo de energía en cada habitación de tu hogar con consejos prácticos.</p>
+                                </div>
+                            </div>
+                            <div class="col s12 m4">
+                                <div class="guide-item">
+                                    <i class="material-icons large orange-text">kitchen</i>
+                                    <h6>Cocina Inteligente</h6>
+                                    <p class="grey-text">Descubre cómo cocinar de forma eficiente y reducir el consumo de electrodomésticos de cocina.</p>
+                                </div>
+                            </div>
+                            <div class="col s12 m4">
+                                <div class="guide-item">
+                                    <i class="material-icons large green-text">solar_power</i>
+                                    <h6>Energía Solar</h6>
+                                    <p class="grey-text">Explora las opciones de energía solar para tu hogar y reduce tu dependencia de la red eléctrica.</p>
                                 </div>
                             </div>
                         </div>
@@ -87,26 +108,12 @@
                 </div>
             </div>
         </div>
-    </main>
-</div>
+    </div>
+</main>
 
 <script>
-const { createApp, ref, onMounted } = Vue;
-createApp({
-    setup() {
-        const recommendations = ref({{ recommendations | tojson }});
-        const guides = [
-            { icon: 'home', color: 'teal', title: 'Hogar Eficiente', text: 'Aprende a optimizar el consumo de energía en cada habitación de tu hogar con consejos prácticos.' },
-            { icon: 'kitchen', color: 'orange', title: 'Cocina Inteligente', text: 'Descubre cómo cocinar de forma eficiente y reducir el consumo de electrodomésticos de cocina.' },
-            { icon: 'solar_power', color: 'green', title: 'Energía Solar', text: 'Explora las opciones de energía solar para tu hogar y reduce tu dependencia de la red eléctrica.' }
-        ];
-        const getCategoryColor = (cat) => {
-            const colors = { meta: 'teal', consumo: 'orange', costo: 'green', ambiente: 'blue' };
-            return colors[cat] || 'grey';
-        };
-        onMounted(() => { M.Sidenav.init(document.querySelectorAll('.sidenav')); });
-        return { recommendations, guides, getCategoryColor };
-    }
-}).mount('#recs-app');
+document.addEventListener('DOMContentLoaded', function() {
+    M.Sidenav.init(document.querySelectorAll('.sidenav'));
+});
 </script>
 {% endblock %}

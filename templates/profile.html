@@ -2,120 +2,125 @@
 {% block title %}Perfil - EnergiaSmart{% endblock %}
 
 {% block body %}
-<div id="profile-app">
-    <ul id="slide-out" class="sidenav sidenav-fixed">
-        <li>
-            <div class="user-view sidebar-header">
-                <div class="background teal darken-2"></div>
-                <div class="sidebar-logo"><img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="width: 180px; height: auto; padding: 10px 0;"></div>
-                <a href="{{ url_for('profile_page') }}"><i class="material-icons circle white-text teal darken-1">person</i></a>
-                <a href="{{ url_for('profile_page') }}"><span class="white-text name">{{ current_user.name }}</span></a>
-                <a href="{{ url_for('profile_page') }}"><span class="white-text email">{{ current_user.email }}</span></a>
+<ul id="slide-out" class="sidenav sidenav-fixed">
+    <li>
+        <div class="user-view sidebar-header">
+            <div class="background teal darken-2"></div>
+            <div class="sidebar-logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="width: 180px; height: auto; padding: 10px 0;">
             </div>
-        </li>
-        <li><a href="{{ url_for('dashboard') }}" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
-        <li><a href="{{ url_for('readings_page') }}" class="waves-effect"><i class="material-icons">speed</i>Lecturas</a></li>
-        <li><a href="{{ url_for('statistics_page') }}" class="waves-effect"><i class="material-icons">bar_chart</i>Estadísticas</a></li>
-        <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect"><i class="material-icons">lightbulb</i>Recomendaciones</a></li>
-        <li><a href="{{ url_for('history_page') }}" class="waves-effect"><i class="material-icons">history</i>Historial</a></li>
-        <li><div class="divider"></div></li>
-        <li><a href="{{ url_for('profile_page') }}" class="waves-effect active"><i class="material-icons">person</i>Perfil</a></li>
-        <li><a href="{{ url_for('settings_page') }}" class="waves-effect"><i class="material-icons">settings</i>Configuración</a></li>
-        <li><div class="divider"></div></li>
-        <li><a href="{{ url_for('logout') }}" class="waves-effect red-text"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
-    </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <a href="{{ url_for('profile_page') }}"><i class="material-icons circle white-text teal darken-1">person</i></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text name">{{ current_user.name }}</span></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text email">{{ current_user.email }}</span></a>
+        </div>
+    </li>
+    <li><a href="{{ url_for('dashboard') }}" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="{{ url_for('readings_page') }}" class="waves-effect"><i class="material-icons">speed</i>Lecturas</a></li>
+    <li><a href="{{ url_for('statistics_page') }}" class="waves-effect"><i class="material-icons">bar_chart</i>Estadísticas</a></li>
+    <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect"><i class="material-icons">lightbulb</i>Recomendaciones</a></li>
+    <li><a href="{{ url_for('history_page') }}" class="waves-effect"><i class="material-icons">history</i>Historial</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('profile_page') }}" class="waves-effect active"><i class="material-icons">person</i>Perfil</a></li>
+    <li><a href="{{ url_for('settings_page') }}" class="waves-effect"><i class="material-icons">settings</i>Configuración</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('logout') }}" class="waves-effect red-text"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+</ul>
 
-    <main class="main-content">
-        <nav class="nav-extended teal darken-1">
-            <div class="nav-wrapper">
-                <a href="{{ url_for('dashboard') }}" class="brand-logo center"><img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="height: 36px; margin-top: 2px;"></a>
-                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            </div>
-        </nav>
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
-        <div class="container-fluid">
-            <h4 class="page-title"><i class="material-icons left">person</i>Mi Perfil</h4>
+<main class="main-content">
+    <nav class="nav-extended teal darken-1">
+        <div class="nav-wrapper">
+            <a href="{{ url_for('dashboard') }}" class="brand-logo center">EnergiaSmart</a>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
 
-            <div class="row">
-                <div class="col s12 m4">
-                    <div class="card z-depth-2 center-align">
-                        <div class="card-content">
-                            <i class="material-icons large teal-text">account_circle</i>
-                            <h5>\{{ form.name }}</h5>
-                            <p class="grey-text">{{ current_user.email }}</p>
-                            <p class="grey-text text-lighten-1">Miembro desde {{ current_user.created_at.strftime('%B %Y') }}</p>
-                        </div>
+    <div class="container-fluid">
+        <h4 class="page-title"><i class="material-icons left">person</i>Mi Perfil</h4>
+
+        <div class="row">
+            <div class="col s12 m4">
+                <div class="card z-depth-2 center-align">
+                    <div class="card-content">
+                        <i class="material-icons large teal-text">account_circle</i>
+                        <h5>{{ current_user.name }}</h5>
+                        <p class="grey-text">{{ current_user.email }}</p>
+                        <p class="grey-text text-lighten-1">Miembro desde {{ current_user.created_at.strftime('%B %Y') }}</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="col s12 m8">
-                    <div class="card z-depth-2">
-                        <div class="card-content">
-                            <span class="card-title">Editar Perfil</span>
-                            <form @submit.prevent="saveProfile">
-                                <div class="input-field">
-                                    <i class="material-icons prefix">person</i>
-                                    <input id="name" v-model="form.name" type="text" required>
-                                    <label for="name" class="active">Nombre</label>
-                                </div>
-                                <div class="input-field">
-                                    <i class="material-icons prefix">email</i>
-                                    <input id="email" type="email" value="{{ current_user.email }}" disabled>
-                                    <label for="email" class="active">Email (no editable)</label>
-                                </div>
-                                <div class="row">
-                                    <div class="col s12 m6">
-                                        <div class="input-field">
-                                            <i class="material-icons prefix">flag</i>
-                                            <input id="monthly_goal_kwh" v-model.number="form.monthly_goal_kwh" type="number" step="0.1">
-                                            <label for="monthly_goal_kwh" class="active">Meta mensual (kWh)</label>
-                                        </div>
-                                    </div>
-                                    <div class="col s12 m6">
-                                        <div class="input-field">
-                                            <i class="material-icons prefix">attach_money</i>
-                                            <input id="tariff_rate" v-model.number="form.tariff_rate" type="number" step="0.01">
-                                            <label for="tariff_rate" class="active">Tarifa por kWh</label>
-                                        </div>
+            <div class="col s12 m8">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title">Editar Perfil</span>
+                        <form id="profileForm">
+                            <div class="input-field">
+                                <i class="material-icons prefix">person</i>
+                                <input id="name" name="name" type="text" value="{{ current_user.name }}" required>
+                                <label for="name" class="active">Nombre</label>
+                            </div>
+
+                            <div class="input-field">
+                                <i class="material-icons prefix">email</i>
+                                <input id="email" name="email" type="email" value="{{ current_user.email }}" disabled>
+                                <label for="email" class="active">Email (no editable)</label>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <div class="input-field">
+                                        <i class="material-icons prefix">flag</i>
+                                        <input id="monthly_goal_kwh" name="monthly_goal_kwh" type="number" step="0.1" value="{{ current_user.monthly_goal_kwh }}">
+                                        <label for="monthly_goal_kwh" class="active">Meta mensual (kWh)</label>
                                     </div>
                                 </div>
-                                <button class="btn waves-effect waves-light teal darken-1" type="submit" :disabled="saving">
-                                    <i class="material-icons right">\{{ saving ? 'hourglass_empty' : 'save' }}</i>\{{ saving ? 'Guardando...' : 'Guardar Cambios' }}
-                                </button>
-                            </form>
-                        </div>
+                                <div class="col s12 m6">
+                                    <div class="input-field">
+                                        <i class="material-icons prefix">attach_money</i>
+                                        <input id="tariff_rate" name="tariff_rate" type="number" step="0.01" value="{{ current_user.tariff_rate }}">
+                                        <label for="tariff_rate" class="active">Tarifa por kWh</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn waves-effect waves-light teal darken-1" type="submit">
+                                <i class="material-icons right">save</i>Guardar Cambios
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
-</div>
+    </div>
+</main>
 
 <script>
-const { createApp, ref, reactive, onMounted } = Vue;
-createApp({
-    setup() {
-        const saving = ref(false);
-        const form = reactive({
-            name: '{{ current_user.name }}',
-            monthly_goal_kwh: {{ current_user.monthly_goal_kwh }},
-            tariff_rate: {{ current_user.tariff_rate }}
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    M.Sidenav.init(document.querySelectorAll('.sidenav'));
 
-        const saveProfile = async () => {
-            saving.value = true;
-            try {
-                swalLoading('Guardando...');
-                const result = await API.put('/api/profile', form);
-                swalSuccess('Perfil actualizado', result.message).then(() => location.reload());
-            } catch { swalError('Error', 'No se pudo guardar los cambios.'); }
-            finally { saving.value = false; }
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const data = {
+            name: document.getElementById('name').value,
+            monthly_goal_kwh: parseFloat(document.getElementById('monthly_goal_kwh').value),
+            tariff_rate: parseFloat(document.getElementById('tariff_rate').value)
         };
-
-        onMounted(() => { M.Sidenav.init(document.querySelectorAll('.sidenav')); M.updateTextFields(); });
-        return { form, saving, saveProfile };
-    }
-}).mount('#profile-app');
+        swalLoading('Guardando...');
+        fetch('/api/profile', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(r => r.json())
+        .then(d => {
+            swalSuccess('Perfil actualizado', d.message).then(() => location.reload());
+        })
+        .catch(() => {
+            swalError('Error', 'No se pudo guardar los cambios.');
+        });
+    });
+});
 </script>
 {% endblock %}

@@ -2,197 +2,212 @@
 {% block title %}Dashboard - EnergiaSmart{% endblock %}
 
 {% block body %}
-<div id="dashboard-app">
-    <ul id="slide-out" class="sidenav sidenav-fixed">
-        <li>
-            <div class="user-view sidebar-header">
-                <div class="background teal darken-2"></div>
-                <div class="sidebar-logo">
-                    <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="width: 180px; height: auto; padding: 10px 0;">
-                </div>
-                <a href="{{ url_for('profile_page') }}"><i class="material-icons circle white-text teal darken-1">person</i></a>
-                <a href="{{ url_for('profile_page') }}"><span class="white-text name">{{ current_user.name }}</span></a>
-                <a href="{{ url_for('profile_page') }}"><span class="white-text email">{{ current_user.email }}</span></a>
+<ul id="slide-out" class="sidenav sidenav-fixed">
+    <li>
+        <div class="user-view sidebar-header">
+            <div class="background teal darken-2"></div>
+            <div class="sidebar-logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="width: 180px; height: auto; padding: 10px 0;">
             </div>
-        </li>
-        <li><a href="{{ url_for('dashboard') }}" class="waves-effect active"><i class="material-icons">dashboard</i>Dashboard</a></li>
-        <li><a href="{{ url_for('readings_page') }}" class="waves-effect"><i class="material-icons">speed</i>Lecturas</a></li>
-        <li><a href="{{ url_for('statistics_page') }}" class="waves-effect"><i class="material-icons">bar_chart</i>Estadísticas</a></li>
-        <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect"><i class="material-icons">lightbulb</i>Recomendaciones</a></li>
-        <li><a href="{{ url_for('history_page') }}" class="waves-effect"><i class="material-icons">history</i>Historial</a></li>
-        <li><div class="divider"></div></li>
-        <li><a href="{{ url_for('profile_page') }}" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
-        <li><a href="{{ url_for('settings_page') }}" class="waves-effect"><i class="material-icons">settings</i>Configuración</a></li>
-        <li><div class="divider"></div></li>
-        <li><a href="{{ url_for('logout') }}" class="waves-effect red-text"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
-    </ul>
+            <a href="{{ url_for('profile_page') }}"><i class="material-icons circle white-text teal darken-1">person</i></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text name">{{ current_user.name }}</span></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text email">{{ current_user.email }}</span></a>
+        </div>
+    </li>
+    <li><a href="{{ url_for('dashboard') }}" class="waves-effect active"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="{{ url_for('readings_page') }}" class="waves-effect"><i class="material-icons">speed</i>Lecturas</a></li>
+    <li><a href="{{ url_for('statistics_page') }}" class="waves-effect"><i class="material-icons">bar_chart</i>Estadísticas</a></li>
+    <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect"><i class="material-icons">lightbulb</i>Recomendaciones</a></li>
+    <li><a href="{{ url_for('history_page') }}" class="waves-effect"><i class="material-icons">history</i>Historial</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('profile_page') }}" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
+    <li><a href="{{ url_for('settings_page') }}" class="waves-effect"><i class="material-icons">settings</i>Configuración</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('logout') }}" class="waves-effect red-text"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+</ul>
 
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
-    <main class="main-content">
-        <nav class="nav-extended teal darken-1">
-            <div class="nav-wrapper">
-                <a href="{{ url_for('dashboard') }}" class="brand-logo center">
-                    <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="height: 36px; margin-top: 2px;">
-                </a>
-                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <ul class="right">
-                    <li><a href="{{ url_for('settings_page') }}"><i class="material-icons">settings</i></a></li>
-                </ul>
+<main class="main-content">
+    <nav class="nav-extended teal darken-1">
+        <div class="nav-wrapper">
+            <a href="{{ url_for('dashboard') }}" class="brand-logo center">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="height: 36px; margin-top: 2px;">
+            </a>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right">
+                <li><a href="{{ url_for('settings_page') }}"><i class="material-icons">settings</i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="swal-flash" data-type="{{ 'error' if category == 'error' else 'success' }}" data-title="{{ message }}" style="display:none;"></div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row stats-cards">
+            <div class="col s12 m6 l3">
+                <div class="card stat-card teal darken-1 white-text z-depth-2">
+                    <div class="card-content">
+                        <i class="material-icons card-icon">bolt</i>
+                        <p class="stat-label">Consumo del mes</p>
+                        <h4 class="stat-value">{{ current_consumption }} kWh</h4>
+                        {% if variation != 0 %}
+                        <p class="stat-variation {{ 'red-text text-lighten-3' if variation > 0 else 'green-text text-lighten-3' }}">
+                            <i class="material-icons tiny">{{ 'trending_up' if variation > 0 else 'trending_down' }}</i>
+                            {{ variation }}% vs mes anterior
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </nav>
 
-        <div class="container-fluid">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="swal-flash" data-type="{{ 'error' if category == 'error' else 'success' }}" data-title="{{ message }}" style="display:none;"></div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            <div class="row stats-cards">
-                <div class="col s12 m6 l3">
-                    <div class="card stat-card teal darken-1 white-text z-depth-2">
-                        <div class="card-content">
-                            <i class="material-icons card-icon">bolt</i>
-                            <p class="stat-label">Consumo del mes</p>
-                            <h4 class="stat-value">\{{ stats.consumption }} kWh</h4>
-                            <p v-if="stats.variation !== 0" class="stat-variation" :class="stats.variation > 0 ? 'red-text text-lighten-3' : 'green-text text-lighten-3'">
-                                <i class="material-icons tiny">\{{ stats.variation > 0 ? 'trending_up' : 'trending_down' }}</i>
-                                \{{ stats.variation }}% vs mes anterior
-                            </p>
-                        </div>
+            <div class="col s12 m6 l3">
+                <div class="card stat-card orange darken-2 white-text z-depth-2">
+                    <div class="card-content">
+                        <i class="material-icons card-icon">attach_money</i>
+                        <p class="stat-label">Costo estimado</p>
+                        <h4 class="stat-value">${{ estimated_cost }}</h4>
+                        <p class="stat-variation">Tarifa: ${{ current_user.tariff_rate }}/kWh</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="col s12 m6 l3">
-                    <div class="card stat-card orange darken-2 white-text z-depth-2">
-                        <div class="card-content">
-                            <i class="material-icons card-icon">attach_money</i>
-                            <p class="stat-label">Costo estimado</p>
-                            <h4 class="stat-value">$\{{ stats.cost }}</h4>
-                            <p class="stat-variation">Tarifa: ${{ current_user.tariff_rate }}/kWh</p>
-                        </div>
+            <div class="col s12 m6 l3">
+                <div class="card stat-card green darken-2 white-text z-depth-2">
+                    <div class="card-content">
+                        <i class="material-icons card-icon">eco</i>
+                        <p class="stat-label">CO₂ emitido</p>
+                        <h4 class="stat-value">{{ co2_emitted }} kg</h4>
+                        <p class="stat-variation">Equivalente a árboles absorbidos</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="col s12 m6 l3">
-                    <div class="card stat-card green darken-2 white-text z-depth-2">
-                        <div class="card-content">
-                            <i class="material-icons card-icon">eco</i>
-                            <p class="stat-label">CO₂ emitido</p>
-                            <h4 class="stat-value">\{{ stats.co2 }} kg</h4>
-                            <p class="stat-variation">Equivalente a árboles absorbidos</p>
+            <div class="col s12 m6 l3">
+                <div class="card stat-card blue darken-2 white-text z-depth-2">
+                    <div class="card-content">
+                        <i class="material-icons card-icon">flag</i>
+                        <p class="stat-label">Meta de ahorro</p>
+                        <h4 class="stat-value">{{ goal_percent }}%</h4>
+                        <div class="progress white" style="height: 6px; border-radius: 3px;">
+                            <div class="determinate {{ 'green' if goal_percent <= 80 else 'orange' if goal_percent <= 100 else 'red' }}" style="width: {{ goal_percent }}%"></div>
                         </div>
+                        <p class="stat-variation">Meta: {{ current_user.monthly_goal_kwh }} kWh</p>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="col s12 m6 l3">
-                    <div class="card stat-card blue darken-2 white-text z-depth-2">
-                        <div class="card-content">
-                            <i class="material-icons card-icon">flag</i>
-                            <p class="stat-label">Meta de ahorro</p>
-                            <h4 class="stat-value">\{{ stats.goalPercent }}%</h4>
-                            <div class="progress white" style="height: 6px; border-radius: 3px;">
-                                <div class="determinate" :class="goalBarColor" :style="{ width: stats.goalPercent + '%' }"></div>
+        <div class="row">
+            <div class="col s12 l8">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">show_chart</i>Consumo Reciente</span>
+                        <canvas id="consumptionChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 l4">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">pie_chart</i>Distribución</span>
+                        <canvas id="categoryChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 l6">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">history</i>Lecturas Recientes</span>
+                        <table class="striped">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Lectura</th>
+                                    <th>Consumo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reading in readings[:5] %}
+                                <tr>
+                                    <td>{{ reading.reading_date.strftime('%d/%m/%Y') }}</td>
+                                    <td>{{ reading.meter_reading }} kWh</td>
+                                    <td>-</td>
+                                </tr>
+                                {% endfor %}
+                                {% if not readings %}
+                                <tr><td colspan="3" class="center-align grey-text">Sin lecturas registradas</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-action">
+                        <a href="{{ url_for('readings_page') }}">Registrar nueva lectura</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 l6">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">lightbulb</i>Recomendaciones</span>
+                        <ul class="collection">
+                            {% for rec in recommendations[:4] %}
+                            <li class="collection-item avatar">
+                                <i class="material-icons circle {{ 'red' if rec.priority == 'high' else 'orange' if rec.priority == 'medium' else 'green' }}">
+                                    {{ 'warning' if rec.priority == 'high' else 'info' if rec.priority == 'medium' else 'check' }}
+                                </i>
+                                <span class="title">{{ rec.title }}</span>
+                                <p>{{ rec.description[:80] }}...</p>
+                            </li>
+                            {% endfor %}
+                            {% if not recommendations %}
+                            <li class="collection-item center-align grey-text">Sin recomendaciones disponibles</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="card-action">
+                        <a href="{{ url_for('recommendations_page') }}">Ver todas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <div class="card z-depth-2 tips-card">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">tips_and_updates</i>Consejos de Ahorro Energético</span>
+                        <div class="row">
+                            <div class="col s12 m4">
+                                <div class="tip-item">
+                                    <i class="material-icons medium teal-text">lightbulb</i>
+                                    <h6>Iluminación LED</h6>
+                                    <p class="grey-text">Las bombillas LED consumen un 75% menos que las incandescentes y duran 25 veces más.</p>
+                                </div>
                             </div>
-                            <p class="stat-variation">Meta: \{{ monthlyGoal }} kWh</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col s12 l8">
-                    <div class="card z-depth-2">
-                        <div class="card-content">
-                            <span class="card-title"><i class="material-icons left">show_chart</i>Consumo Reciente</span>
-                            <canvas ref="consumptionChart" height="300"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s12 l4">
-                    <div class="card z-depth-2">
-                        <div class="card-content">
-                            <span class="card-title"><i class="material-icons left">pie_chart</i>Distribución</span>
-                            <canvas ref="categoryChart" height="300"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col s12 l6">
-                    <div class="card z-depth-2">
-                        <div class="card-content">
-                            <span class="card-title"><i class="material-icons left">history</i>Lecturas Recientes</span>
-                            <table class="striped">
-                                <thead>
-                                    <tr>
-                                        <th>Fecha</th>
-                                        <th>Lectura</th>
-                                        <th>Consumo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(reading, index) in recentReadings" :key="reading.id">
-                                        <td>\{{ formatDate(reading.reading_date) }}</td>
-                                        <td>\{{ reading.meter_reading }} kWh</td>
-                                        <td>
-                                            <span v-if="index < recentReadings.length - 1" :class="getReadingConsumption(reading, index) > 100 ? 'red-text' : 'teal-text'">
-                                                \{{ getReadingConsumption(reading, index) }} kWh
-                                            </span>
-                                            <span v-else class="grey-text">-</span>
-                                        </td>
-                                    </tr>
-                                    <tr v-if="recentReadings.length === 0">
-                                        <td colspan="3" class="center-align grey-text">Sin lecturas registradas</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="card-action">
-                            <a href="{{ url_for('readings_page') }}">Registrar nueva lectura</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s12 l6">
-                    <div class="card z-depth-2">
-                        <div class="card-content">
-                            <span class="card-title"><i class="material-icons left">lightbulb</i>Recomendaciones</span>
-                            <ul class="collection">
-                                <li v-for="rec in recommendations.slice(0, 4)" :key="rec.title" class="collection-item avatar">
-                                    <i class="material-icons circle" :class="rec.priority === 'high' ? 'red' : rec.priority === 'medium' ? 'orange' : 'green'">
-                                        \{{ rec.priority === 'high' ? 'warning' : rec.priority === 'medium' ? 'info' : 'check' }}
-                                    </i>
-                                    <span class="title">\{{ rec.title }}</span>
-                                    <p>\{{ rec.description.substring(0, 80) }}...</p>
-                                </li>
-                                <li v-if="recommendations.length === 0" class="collection-item center-align grey-text">Sin recomendaciones disponibles</li>
-                            </ul>
-                        </div>
-                        <div class="card-action">
-                            <a href="{{ url_for('recommendations_page') }}">Ver todas</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col s12">
-                    <div class="card z-depth-2 tips-card">
-                        <div class="card-content">
-                            <span class="card-title"><i class="material-icons left">tips_and_updates</i>Consejos de Ahorro Energético</span>
-                            <div class="row">
-                                <div class="col s12 m4" v-for="tip in tips" :key="tip.title">
-                                    <div class="tip-item">
-                                        <i class="material-icons medium" :class="tip.color + '-text'">\{{ tip.icon }}</i>
-                                        <h6>\{{ tip.title }}</h6>
-                                        <p class="grey-text">\{{ tip.text }}</p>
-                                    </div>
+                            <div class="col s12 m4">
+                                <div class="tip-item">
+                                    <i class="material-icons medium orange-text">thermostat</i>
+                                    <h6>Temperatura ideal</h6>
+                                    <p class="grey-text">Mantén el termostato entre 20-22°C en invierno y 24-26°C en verano.</p>
+                                </div>
+                            </div>
+                            <div class="col s12 m4">
+                                <div class="tip-item">
+                                    <i class="material-icons medium green-text">power</i>
+                                    <h6>Energía fantasma</h6>
+                                    <p class="grey-text">Los aparatos en standby consumen hasta un 10% de electricidad. Desconéctalos.</p>
                                 </div>
                             </div>
                         </div>
@@ -200,128 +215,82 @@
                 </div>
             </div>
         </div>
-    </main>
-</div>
+    </div>
+</main>
 
 <script>
-const { createApp, ref, reactive, computed, onMounted, nextTick } = Vue;
+document.addEventListener('DOMContentLoaded', function() {
+    M.Sidenav.init(document.querySelectorAll('.sidenav'));
 
-createApp({
-    setup() {
-        const stats = reactive({
-            consumption: {{ current_consumption }},
-            variation: {{ variation }},
-            cost: {{ estimated_cost }},
-            co2: {{ co2_emitted }},
-            goalPercent: {{ goal_percent }}
-        });
-
-        const monthlyGoal = ref({{ current_user.monthly_goal_kwh }});
-        const chartLabels = ref({{ chart_labels | tojson }});
-        const chartData = ref({{ chart_data | tojson }});
-        const categories = ref({{ categories | tojson }});
-        const recentReadings = ref({{ readings[:5] | tojson }});
-        const recommendations = ref({{ recommendations | tojson }});
-
-        const consumptionChart = ref(null);
-        const categoryChart = ref(null);
-
-        const goalBarColor = computed(() => {
-            if (stats.goalPercent <= 80) return 'green';
-            if (stats.goalPercent <= 100) return 'orange';
-            return 'red';
-        });
-
-        const tips = [
-            { icon: 'lightbulb', color: 'teal', title: 'Iluminación LED', text: 'Las bombillas LED consumen un 75% menos que las incandescentes y duran 25 veces más.' },
-            { icon: 'thermostat', color: 'orange', title: 'Temperatura ideal', text: 'Mantén el termostato entre 20-22°C en invierno y 24-26°C en verano.' },
-            { icon: 'power', color: 'green', title: 'Energía fantasma', text: 'Los aparatos en standby consumen hasta un 10% de electricidad. Desconéctalos.' }
-        ];
-
-        const formatDate = (dateStr) => {
-            if (!dateStr) return '';
-            const d = new Date(dateStr);
-            return d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        };
-
-        const getReadingConsumption = (reading, index) => {
-            if (index >= recentReadings.value.length - 1) return 0;
-            const prev = recentReadings.value[index + 1];
-            return (reading.meter_reading - prev.meter_reading).toFixed(2);
-        };
-
-        const initCharts = () => {
-            if (consumptionChart.value && chartLabels.value.length > 0) {
-                new Chart(consumptionChart.value, {
-                    type: 'line',
-                    data: {
-                        labels: chartLabels.value,
-                        datasets: [{
-                            label: 'Consumo (kWh)',
-                            data: chartData.value,
-                            borderColor: '#00897b',
-                            backgroundColor: 'rgba(0,137,123,0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: '#00897b',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 2,
-                            pointRadius: 5
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            y: { beginAtZero: true, grid: { color: '#e0e0e0' } },
-                            x: { grid: { display: false } }
-                        }
-                    }
-                });
-            }
-
-            if (categoryChart.value && Object.keys(categories.value).length > 0) {
-                new Chart(categoryChart.value, {
-                    type: 'doughnut',
-                    data: {
-                        labels: Object.keys(categories.value),
-                        datasets: [{
-                            data: Object.values(categories.value),
-                            backgroundColor: ['#00897b', '#ff8f00', '#43a047', '#1e88e5'],
-                            borderWidth: 2,
-                            borderColor: '#fff'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { position: 'bottom' } }
-                    }
-                });
-            }
-        };
-
-        onMounted(() => {
-            M.Sidenav.init(document.querySelectorAll('.sidenav'));
-            document.querySelectorAll('.swal-flash').forEach(el => {
-                const type = el.dataset.type;
-                const title = el.dataset.title;
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        icon: type, title, confirmButtonText: 'OK',
-                        confirmButtonColor: '#00897b',
-                        customClass: { popup: 'swal2-popup-custom' },
-                        timer: type === 'success' ? 2500 : undefined,
-                        timerProgressBar: type === 'success'
-                    });
-                }
+    document.querySelectorAll('.swal-flash').forEach(el => {
+        const type = el.dataset.type;
+        const title = el.dataset.title;
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: type,
+                title: title,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#00897b',
+                customClass: { popup: 'swal2-popup-custom' },
+                timer: type === 'success' ? 2500 : undefined,
+                timerProgressBar: type === 'success'
             });
-            nextTick(initCharts);
-        });
+        }
+    });
 
-        return { stats, monthlyGoal, recentReadings, recommendations, goalBarColor, tips, consumptionChart, categoryChart, formatDate, getReadingConsumption };
+    const chartLabels = {{ chart_labels | tojson }};
+    const chartData = {{ chart_data | tojson }};
+    const categories = {{ categories | tojson }};
+
+    if (chartLabels.length > 0) {
+        new Chart(document.getElementById('consumptionChart'), {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Consumo (kWh)',
+                    data: chartData,
+                    borderColor: '#00897b',
+                    backgroundColor: 'rgba(0,137,123,0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#00897b',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#e0e0e0' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
     }
-}).mount('#dashboard-app');
+
+    if (Object.keys(categories).length > 0) {
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(categories),
+                datasets: [{
+                    data: Object.values(categories),
+                    backgroundColor: ['#00897b', '#ff8f00', '#43a047', '#1e88e5'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    }
+});
 </script>
 {% endblock %}
