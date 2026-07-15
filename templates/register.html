@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Registro - EnergiaSmart{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+
+{% block body %}
+<div class="auth-container">
+    <div class="auth-background">
+        <div class="auth-particles" id="particles"></div>
+    </div>
+
+    <div class="auth-content">
+        <div class="auth-card z-depth-5">
+            <div class="auth-header">
+                <div class="auth-logo-svg">
+                    <img src="{{ url_for('static', filename='img/logo-large.svg') }}" alt="EnergiaSmart Logo" style="width: 100px; height: 100px;">
+                </div>
+                <h3 class="auth-title">Crear Cuenta</h3>
+                <p class="auth-subtitle">Comienza a controlar tu energía</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="card-panel {{ 'red lighten-2' if category == 'error' else 'green lighten-2' }} white-text" style="padding: 10px 20px; margin: 10px 0;">
+                            <i class="material-icons left">{{ 'error' if category == 'error' else 'check_circle' }}</i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('register') }}" class="auth-form">
+                <div class="input-field">
+                    <i class="material-icons prefix">person</i>
+                    <input id="name" name="name" type="text" class="validate" required>
+                    <label for="name">Nombre completo</label>
+                </div>
+
+                <div class="input-field">
+                    <i class="material-icons prefix">email</i>
+                    <input id="email" name="email" type="email" class="validate" required>
+                    <label for="email">Correo electrónico</label>
+                </div>
+
+                <div class="input-field">
+                    <i class="material-icons prefix">lock</i>
+                    <input id="password" name="password" type="password" class="validate" required minlength="6">
+                    <label for="password">Contraseña (mín. 6 caracteres)</label>
+                </div>
+
+                <div class="input-field">
+                    <i class="material-icons prefix">lock_outline</i>
+                    <input id="confirm_password" name="confirm_password" type="password" class="validate" required>
+                    <label for="confirm_password">Confirmar contraseña</label>
+                </div>
+
+                <button class="btn-large waves-effect waves-light auth-btn" type="submit">
+                    <i class="material-icons right">person_add</i>Crear Cuenta
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00897b"/>
+      <stop offset="100%" style="stop-color:#004d40"/>
+    </linearGradient>
+    <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD54F"/>
+      <stop offset="100%" style="stop-color:#FF8F00"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#004d40" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="180" height="180" rx="40" fill="url(#bgGrad)"/>
+  <g filter="url(#shadow)">
+    <path d="M100 24L54 100h28l-12 56 46-72H78z" fill="url(#boltGrad)" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+  <circle cx="145" cy="35" r="8" fill="#4DB6AC" opacity="0.6"/>
+  <circle cx="155" cy="60" r="5" fill="#80CBC4" opacity="0.4"/>
+  <circle cx="40" cy="145" r="6" fill="#4DB6AC" opacity="0.5"/>
+</svg>

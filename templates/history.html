@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}Historial - EnergiaSmart{% endblock %}
+
+{% block body %}
+<ul id="slide-out" class="sidenav sidenav-fixed">
+    <li>
+        <div class="user-view sidebar-header">
+            <div class="background teal darken-2"></div>
+            <div class="sidebar-logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="width: 180px; height: auto; padding: 10px 0;">
+            </div>
+            <a href="{{ url_for('profile_page') }}"><i class="material-icons circle white-text teal darken-1">person</i></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text name">{{ current_user.name }}</span></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text email">{{ current_user.email }}</span></a>
+        </div>
+    </li>
+    <li><a href="{{ url_for('dashboard') }}" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="{{ url_for('readings_page') }}" class="waves-effect"><i class="material-icons">speed</i>Lecturas</a></li>
+    <li><a href="{{ url_for('statistics_page') }}" class="waves-effect"><i class="material-icons">bar_chart</i>Estadísticas</a></li>
+    <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect"><i class="material-icons">lightbulb</i>Recomendaciones</a></li>
+    <li><a href="{{ url_for('history_page') }}" class="waves-effect active"><i class="material-icons">history</i>Historial</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('profile_page') }}" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
+    <li><a href="{{ url_for('settings_page') }}" class="waves-effect"><i class="material-icons">settings</i>Configuración</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('logout') }}" class="waves-effect red-text"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+</ul>
+
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
+<main class="main-content">
+    <nav class="nav-extended teal darken-1">
+        <div class="nav-wrapper">
+            <a href="{{ url_for('dashboard') }}" class="brand-logo center">EnergiaSmart</a>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <h4 class="page-title"><i class="material-icons left">history</i>Historial de Consumos</h4>
+
+        <div class="row">
+            <div class="col s12 l6">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">list</i>Lecturas</span>
+                        <table class="striped highlight responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fecha</th>
+                                    <th>Lectura (kWh)</th>
+                                    <th>Consumo</th>
+                                    <th>Notas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reading in readings %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ reading.reading_date.strftime('%d/%m/%Y') }}</td>
+                                    <td><strong>{{ reading.meter_reading }}</strong></td>
+                                    <td>
+                                        {% if loop.index < readings|length %}
+                                            {% set prev = readings[loop.index] %}
+                                            {% set consumption = reading.meter_reading - prev.meter_reading %}
+                                            <span class="{{ 'red-text' if consumption > 100 else 'teal-text' }}">{{ consumption|round(2) }} kWh</span>
+                                        {% else %}
+                                            <span class="grey-text">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ reading.notes or '-' }}</td>
+                                </tr>
+                                {% endfor %}
+                                {% if not readings %}
+                                <tr><td colspan="5" class="center-align grey-text">No hay registros disponibles.</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 l6">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">timeline</i>Consumo por Período</span>
+                        <canvas id="historyChart" height="400"></canvas>
+                    </div>
+                </div>
+
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">summarize</i>Resumen</span>
+                        <table class="striped">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Total de lecturas</strong></td>
+                                    <td class="right-align">{{ readings|length }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Consumo total registrado</strong></td>
+                                    <td class="right-align">{{ consumptions|sum(attribute='kwh')|round(2) }} kWh</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Consumo promedio por período</strong></td>
+                                    <td class="right-align">
+                                        {% if consumptions %}
+                                            {{ (consumptions|sum(attribute='kwh') / consumptions|length)|round(2) }} kWh
+                                        {% else %}
+                                            0 kWh
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mayor consumo registrado</strong></td>
+                                    <td class="right-align">
+                                        {% if consumptions %}
+                                            {{ consumptions|map(attribute='kwh')|max }} kWh
+                                        {% else %}
+                                            0 kWh
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Menor consumo registrado</strong></td>
+                                    <td class="right-align">
+                                        {% if consumptions %}
+                                            {{ consumptions|map(attribute='kwh')|min }} kWh
+                                        {% else %}
+                                            0 kWh
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    M.Sidenav.init(document.querySelectorAll('.sidenav'));
+
+    const consumptions = {{ consumptions | tojson }};
+    if (consumptions.length > 0) {
+        new Chart(document.getElementById('historyChart'), {
+            type: 'line',
+            data: {
+                labels: consumptions.map(c => c.date),
+                datasets: [{
+                    label: 'Consumo (kWh)',
+                    data: consumptions.map(c => c.kwh),
+                    borderColor: '#00897b',
+                    backgroundColor: 'rgba(0,137,123,0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#00897b'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#e0e0e0' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

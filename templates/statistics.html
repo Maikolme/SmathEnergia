@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}Estadísticas - EnergiaSmart{% endblock %}
+
+{% block body %}
+<ul id="slide-out" class="sidenav sidenav-fixed">
+    <li>
+        <div class="user-view sidebar-header">
+            <div class="background teal darken-2"></div>
+            <div class="sidebar-logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EnergiaSmart" style="width: 180px; height: auto; padding: 10px 0;">
+            </div>
+            <a href="{{ url_for('profile_page') }}"><i class="material-icons circle white-text teal darken-1">person</i></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text name">{{ current_user.name }}</span></a>
+            <a href="{{ url_for('profile_page') }}"><span class="white-text email">{{ current_user.email }}</span></a>
+        </div>
+    </li>
+    <li><a href="{{ url_for('dashboard') }}" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="{{ url_for('readings_page') }}" class="waves-effect"><i class="material-icons">speed</i>Lecturas</a></li>
+    <li><a href="{{ url_for('statistics_page') }}" class="waves-effect active"><i class="material-icons">bar_chart</i>Estadísticas</a></li>
+    <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect"><i class="material-icons">lightbulb</i>Recomendaciones</a></li>
+    <li><a href="{{ url_for('history_page') }}" class="waves-effect"><i class="material-icons">history</i>Historial</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('profile_page') }}" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
+    <li><a href="{{ url_for('settings_page') }}" class="waves-effect"><i class="material-icons">settings</i>Configuración</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{{ url_for('logout') }}" class="waves-effect red-text"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+</ul>
+
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
+<main class="main-content">
+    <nav class="nav-extended teal darken-1">
+        <div class="nav-wrapper">
+            <a href="{{ url_for('dashboard') }}" class="brand-logo center">EnergiaSmart</a>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <h4 class="page-title"><i class="material-icons left">bar_chart</i>Estadísticas</h4>
+
+        <div class="row stats-cards">
+            <div class="col s12 m6 l3">
+                <div class="card stat-card teal darken-1 white-text z-depth-2">
+                    <div class="card-content">
+                        <i class="material-icons card-icon">bolt</i>
+                        <p class="stat-label">Total Consumo</p>
+                        <h4 class="stat-value">{{ total_kwh }} kWh</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l3">
+                <div class="card stat-card orange darken-2 white-text z-depth-2">
+                    <div class="card-content">
+                        <i class="material-icons card-icon">attach_money</i>
+                        <p class="stat-label">Costo Total</p>
+                        <h4 class="stat-value">${{ total_cost }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l3">
+                <div class="card stat-card green darken-2 white-text z-depth-2">
+                    <div class="card-content">
+                        <i class="material-icons card-icon">eco</i>
+                        <p class="stat-label">CO₂ Total</p>
+                        <h4 class="stat-value">{{ total_co2 }} kg</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l3">
+                <div class="card stat-card blue darken-2 white-text z-depth-2">
+                    <div class="card-content">
+                        <i class="material-icons card-icon">trending_up</i>
+                        <p class="stat-label">Promedio Mensual</p>
+                        <h4 class="stat-value">{{ avg_monthly }} kWh</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 l8">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">bar_chart</i>Consumo Mensual</span>
+                        <canvas id="monthlyChart" height="350"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 l4">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">pie_chart</i>Comparativa</span>
+                        <canvas id="comparisonChart" height="350"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">show_chart</i>Tendencia de Consumo</span>
+                        <canvas id="trendChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    M.Sidenav.init(document.querySelectorAll('.sidenav'));
+
+    const labels = {{ labels | tojson }};
+    const values = {{ values | tojson }};
+
+    if (labels.length > 0) {
+        new Chart(document.getElementById('monthlyChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Consumo (kWh)',
+                    data: values,
+                    backgroundColor: values.map(v => v > {{ avg_monthly }} ? '#ef5350' : '#00897b'),
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#e0e0e0' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Consumo (kWh)',
+                    data: values,
+                    borderColor: '#00897b',
+                    backgroundColor: 'rgba(0,137,123,0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        const avg = values.reduce((a,b) => a+b, 0) / values.length;
+        new Chart(document.getElementById('comparisonChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Promedio', 'Restante'],
+                datasets: [{
+                    data: [avg, Math.max(0, {{ current_user.monthly_goal_kwh }} - avg)],
+                    backgroundColor: ['#00897b', '#e0e0e0'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

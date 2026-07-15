@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Iniciar Sesión - EnergiaSmart{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+
+{% block body %}
+<div class="auth-container">
+    <div class="auth-background">
+        <div class="auth-particles" id="particles"></div>
+    </div>
+
+    <div class="auth-content">
+        <div class="auth-card z-depth-5">
+            <div class="auth-header">
+                <div class="auth-logo-svg">
+                    <img src="{{ url_for('static', filename='img/logo-large.svg') }}" alt="EnergiaSmart Logo" style="width: 100px; height: 100px;">
+                </div>
+                <h3 class="auth-title">EnergiaSmart</h3>
+                <p class="auth-subtitle">Controla tu consumo, ahorra energía</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="card-panel {{ 'red lighten-2' if category == 'error' else 'green lighten-2' }} white-text" style="padding: 10px 20px; margin: 10px 0;">
+                            <i class="material-icons left">{{ 'error' if category == 'error' else 'check_circle' }}</i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+                <div class="input-field">
+                    <i class="material-icons prefix">email</i>
+                    <input id="email" name="email" type="email" class="validate" required>
+                    <label for="email">Correo electrónico</label>
+                </div>
+
+                <div class="input-field">
+                    <i class="material-icons prefix">lock</i>
+                    <input id="password" name="password" type="password" class="validate" required>
+                    <label for="password">Contraseña</label>
+                </div>
+
+                <button class="btn-large waves-effect waves-light auth-btn" type="submit">
+                    <i class="material-icons right">send</i>Iniciar Sesión
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>¿No tienes una cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a></p>
+            </div>
+        </div>
+
+        <div class="auth-features">
+            <div class="feature-item">
+                <i class="material-icons">trending_down</i>
+                <span>Reduce tu consumo</span>
+            </div>
+            <div class="feature-item">
+                <i class="material-icons">savings</i>
+                <span>Ahorra dinero</span>
+            </div>
+            <div class="feature-item">
+                <i class="material-icons">eco</i>
+                <span>Cuida el planeta</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
