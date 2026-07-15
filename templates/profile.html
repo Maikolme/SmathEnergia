@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
             monthly_goal_kwh: parseFloat(document.getElementById('monthly_goal_kwh').value),
             tariff_rate: parseFloat(document.getElementById('tariff_rate').value)
         };
+        swalLoading('Guardando...');
         fetch('/api/profile', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -114,8 +115,10 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(r => r.json())
         .then(d => {
-            M.toast({ html: d.message, classes: 'green' });
-            setTimeout(() => location.reload(), 1000);
+            swalSuccess('Perfil actualizado', d.message).then(() => location.reload());
+        })
+        .catch(() => {
+            swalError('Error', 'No se pudo guardar los cambios.');
         });
     });
 });

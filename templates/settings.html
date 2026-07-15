@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tariff_rate: parseFloat(document.getElementById('tariff').value),
             currency: document.getElementById('currency').value
         };
+        swalLoading('Guardando...');
         fetch('/api/profile', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -126,15 +127,21 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(r => r.json())
         .then(d => {
-            M.toast({ html: d.message, classes: 'green' });
+            swalSuccess('Configuración guardada', d.message);
+        })
+        .catch(() => {
+            swalError('Error', 'No se pudo guardar la configuración.');
         });
     });
 
     document.getElementById('notifications_toggle').addEventListener('change', function() {
+        const enabled = this.checked;
         fetch('/api/profile', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ notifications_enabled: this.checked })
+            body: JSON.stringify({ notifications_enabled: enabled })
+        }).then(() => {
+            swalToast('success', enabled ? 'Notificaciones activadas' : 'Notificaciones desactivadas');
         });
     });
 });

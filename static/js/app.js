@@ -69,11 +69,15 @@ function clearLocalReadings() {
 }
 
 function showToast(message, type = 'success') {
-    M.toast({
-        html: `<i class="material-icons left">${type === 'success' ? 'check_circle' : 'error'}</i>${message}`,
-        classes: type === 'success' ? 'green' : 'red',
-        displayLength: 3000
-    });
+    if (typeof Swal !== 'undefined') {
+        swalToast(type === 'success' ? 'success' : 'error', message);
+    } else {
+        M.toast({
+            html: `<i class="material-icons left">${type === 'success' ? 'check_circle' : 'error'}</i>${message}`,
+            classes: type === 'success' ? 'green' : 'red',
+            displayLength: 3000
+        });
+    }
 }
 
 function formatDate(dateStr) {

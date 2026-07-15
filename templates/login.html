@@ -21,10 +21,7 @@
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="card-panel {{ 'red lighten-2' if category == 'error' else 'green lighten-2' }} white-text" style="padding: 10px 20px; margin: 10px 0;">
-                            <i class="material-icons left">{{ 'error' if category == 'error' else 'check_circle' }}</i>
-                            {{ message }}
-                        </div>
+                        <div class="swal-flash" data-type="{{ 'error' if category == 'error' else 'success' }}" data-title="{{ message }}" style="display:none;"></div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
@@ -68,4 +65,26 @@
         </div>
     </div>
 </div>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.swal-flash').forEach(el => {
+        const type = el.dataset.type;
+        const title = el.dataset.title;
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: type,
+                title: title,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#00897b',
+                customClass: { popup: 'swal2-popup-custom' },
+                timer: type === 'success' ? 2500 : undefined,
+                timerProgressBar: type === 'success'
+            });
+        }
+    });
+});
+</script>
+{% endblock %}
 {% endblock %}

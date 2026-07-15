@@ -137,11 +137,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.delete-reading').forEach(btn => {
         btn.addEventListener('click', function() {
-            if (confirm('¿Eliminar esta lectura?')) {
-                fetch(`/api/readings/${this.dataset.id}`, { method: 'DELETE' })
-                    .then(r => r.json())
-                    .then(data => { if (data.success) location.reload(); });
-            }
+            const id = this.dataset.id;
+            swalConfirmDanger('¿Eliminar lectura?', 'Esta acción no se puede deshacer.').then(result => {
+                if (result.isConfirmed) {
+                    swalLoading('Eliminando...');
+                    fetch(`/api/readings/${id}`, { method: 'DELETE' })
+                        .then(r => r.json())
+                        .then(data => {
+                            swalClose();
+                            if (data.success) {
+                                swalSuccess('Eliminada', 'La lectura ha sido eliminada.').then(() => location.reload());
+                            } else {
+                                swalError('Error', 'No se pudo eliminar la lectura.');
+                            }
+                        });
+                }
+            });
         });
     });
 });
