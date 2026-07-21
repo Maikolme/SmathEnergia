@@ -3,16 +3,46 @@
 {% block body_class %}auth-page{% endblock %}
 
 {% block body %}
-<div class="auth-container">
-    <div class="auth-background">
-        <div class="auth-particles" id="particles"></div>
+<div class="auth-split">
+    <div class="auth-left">
+        <div class="auth-left-content">
+            <div class="auth-left-logo">
+                <i class="material-icons">bolt</i>
+            </div>
+            <h2 class="auth-left-title">EnergiaSmart</h2>
+            <p class="auth-left-subtitle">Únete y comienza a controlar tu consumo eléctrico de forma inteligente</p>
+
+            <div class="auth-features-list">
+                <div class="auth-feature">
+                    <i class="material-icons">speed</i>
+                    <div>
+                        <h6>Registro fácil</h6>
+                        <p>Agrega tus lecturas en segundos desde cualquier dispositivo.</p>
+                    </div>
+                </div>
+                <div class="auth-feature">
+                    <i class="material-icons">bar_chart</i>
+                    <div>
+                        <h6>Gráficas detalladas</h6>
+                        <p>Visualiza tu consumo diario, semanal y mensual.</p>
+                    </div>
+                </div>
+                <div class="auth-feature">
+                    <i class="material-icons">lightbulb</i>
+                    <div>
+                        <h6>Recomendaciones</h6>
+                        <p>Consejos personalizados para reducir tu factura.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="auth-content">
-        <div class="auth-card z-depth-5">
+    <div class="auth-right">
+        <div class="auth-card">
             <div class="auth-header">
-                <div class="auth-logo-svg">
-                    <img src="{{ url_for('static', filename='img/logo-large.svg') }}" alt="EnergiaSmart Logo" style="width: 100px; height: 100px;">
+                <div class="auth-logo-circle">
+                    <i class="material-icons">person_add</i>
                 </div>
                 <h3 class="auth-title">Crear Cuenta</h3>
                 <p class="auth-subtitle">Comienza a controlar tu energía</p>
@@ -52,13 +82,13 @@
                 </div>
 
                 <button class="btn-large waves-effect waves-light auth-btn" type="submit">
-                    <i class="material-icons right">person_add</i>Crear Cuenta
+                    Crear Cuenta
                 </button>
             </form>
 
-            <div class="auth-footer">
-                <p>¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a></p>
-            </div>
+            <div class="auth-divider"><span>o</span></div>
+
+            <p class="auth-footer-text">¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a></p>
         </div>
     </div>
 </div>

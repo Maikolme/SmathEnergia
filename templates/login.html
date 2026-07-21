@@ -3,19 +3,49 @@
 {% block body_class %}auth-page{% endblock %}
 
 {% block body %}
-<div class="auth-container">
-    <div class="auth-background">
-        <div class="auth-particles" id="particles"></div>
+<div class="auth-split">
+    <div class="auth-left">
+        <div class="auth-left-content">
+            <div class="auth-left-logo">
+                <i class="material-icons">bolt</i>
+            </div>
+            <h2 class="auth-left-title">EnergiaSmart</h2>
+            <p class="auth-left-subtitle">Tu plataforma inteligente para monitorear, analizar y reducir tu consumo eléctrico</p>
+
+            <div class="auth-features-list">
+                <div class="auth-feature">
+                    <i class="material-icons">monitor</i>
+                    <div>
+                        <h6>Monitoreo en tiempo real</h6>
+                        <p>Registra y visualiza tu consumo eléctrico al instante.</p>
+                    </div>
+                </div>
+                <div class="auth-feature">
+                    <i class="material-icons">savings</i>
+                    <div>
+                        <h6>Ahorra dinero</h6>
+                        <p>Estimación de tu factura y metas de ahorro personalizadas.</p>
+                    </div>
+                </div>
+                <div class="auth-feature">
+                    <i class="material-icons">eco</i>
+                    <div>
+                        <h6>Cuida el medio ambiente</h6>
+                        <p>Reduce tu huella de carbono con hábitos eficientes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="auth-content">
-        <div class="auth-card z-depth-5">
+    <div class="auth-right">
+        <div class="auth-card">
             <div class="auth-header">
-                <div class="auth-logo-svg">
-                    <img src="{{ url_for('static', filename='img/logo-large.svg') }}" alt="EnergiaSmart Logo" style="width: 100px; height: 100px;">
+                <div class="auth-logo-circle">
+                    <i class="material-icons">person</i>
                 </div>
-                <h3 class="auth-title">EnergiaSmart</h3>
-                <p class="auth-subtitle">Controla tu consumo, ahorra energía</p>
+                <h3 class="auth-title">Bienvenido</h3>
+                <p class="auth-subtitle">Inicia sesión en tu cuenta</p>
             </div>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -40,28 +70,13 @@
                 </div>
 
                 <button class="btn-large waves-effect waves-light auth-btn" type="submit">
-                    <i class="material-icons right">send</i>Iniciar Sesión
+                    Iniciar Sesión
                 </button>
             </form>
 
-            <div class="auth-footer">
-                <p>¿No tienes una cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a></p>
-            </div>
-        </div>
+            <div class="auth-divider"><span>o</span></div>
 
-        <div class="auth-features">
-            <div class="feature-item">
-                <i class="material-icons">trending_down</i>
-                <span>Reduce tu consumo</span>
-            </div>
-            <div class="feature-item">
-                <i class="material-icons">savings</i>
-                <span>Ahorra dinero</span>
-            </div>
-            <div class="feature-item">
-                <i class="material-icons">eco</i>
-                <span>Cuida el planeta</span>
-            </div>
+            <p class="auth-footer-text">¿No tienes una cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a></p>
         </div>
     </div>
 </div>

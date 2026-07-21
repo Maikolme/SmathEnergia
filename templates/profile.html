@@ -14,16 +14,33 @@
             <a href="{{ url_for('profile_page') }}"><span class="white-text email">{{ current_user.email }}</span></a>
         </div>
     </li>
+
+    <li class="sidebar-section">PRINCIPAL</li>
     <li><a href="{{ url_for('dashboard') }}" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
     <li><a href="{{ url_for('readings_page') }}" class="waves-effect"><i class="material-icons">speed</i>Lecturas</a></li>
+
+    <li class="sidebar-section">ANÁLISIS</li>
     <li><a href="{{ url_for('statistics_page') }}" class="waves-effect"><i class="material-icons">bar_chart</i>Estadísticas</a></li>
-    <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect"><i class="material-icons">lightbulb</i>Recomendaciones</a></li>
+    <li><a href="{{ url_for('recommendations_page') }}" class="waves-effect"><i class="material-icons">lightbulb</i>Recomendaciones<span class="badge new" data-badge="3">3</span></a></li>
     <li><a href="{{ url_for('history_page') }}" class="waves-effect"><i class="material-icons">history</i>Historial</a></li>
-    <li><div class="divider"></div></li>
+
+    <li class="sidebar-section">MI META</li>
+    <li class="sidebar-goal">
+        <div class="goal-info">
+            <span class="goal-label">Meta mensual</span>
+            <span class="goal-value">{{ current_consumption }} / {{ current_user.monthly_goal_kwh }} kWh</span>
+        </div>
+        <div class="progress goal-progress">
+            <div class="determinate" style="width: {{ goal_percent }}%"></div>
+        </div>
+    </li>
+
+    <li class="sidebar-section">CUENTA</li>
     <li><a href="{{ url_for('profile_page') }}" class="waves-effect active"><i class="material-icons">person</i>Perfil</a></li>
     <li><a href="{{ url_for('settings_page') }}" class="waves-effect"><i class="material-icons">settings</i>Configuración</a></li>
-    <li><div class="divider"></div></li>
-    <li><a href="{{ url_for('logout') }}" class="waves-effect red-text"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+
+    <li class="sidebar-divider"></li>
+    <li><a href="{{ url_for('logout') }}" class="waves-effect red-text sidebar-logout"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
 </ul>
 
 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
